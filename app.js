@@ -4,13 +4,14 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 
-import { userRouter } from "./router";
+import userRouter from "./routers/userRouter";
+import videoRouter from "./routers/videoRouter";
+import globalRouter from "./routers/globalRouter";
+import routes from "./routes";
 
-const app = express();
+const app = express(); 
 
-const handleIndex = (req, res) => res.send("Hello......?");
-
-const handleProfile = (req, res) => res.send("You are on my profile!");
+app.set('view engine', 'pug');
 
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -18,8 +19,7 @@ app.use(bodyParser.urlencoded({ extended : true }));
 app.use(helmet());
 app.use(morgan("dev"));
 
-app.get("/", handleIndex);
-app.get("/profile", handleProfile);
-
-app.use("/user", userRouter);
+app.use(routes.home, globalRouter);
+app.use(routes.users, userRouter);
+app.use(routes.videos, videoRouter);
 export default app;
