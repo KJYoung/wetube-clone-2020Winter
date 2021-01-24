@@ -1,4 +1,9 @@
-export const homeController = (req, res) => res.render('home', { pageTitle : 'Home'});
+import {videos} from "../db"
+
+export const homeController = (req, res) => {
+
+    return res.render('home', { pageTitle : 'Home', videos});
+};
 export const searchController = (req, res) => {
     //console.log(req.query);
     //const searchingBy = req.query.term; 아래와 동일함! 아래는 ES6방식
