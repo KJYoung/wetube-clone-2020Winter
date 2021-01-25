@@ -14,6 +14,12 @@ const app = express();
 
 app.use(helmet());
 
+//CSP 조건 때문에 동영상 재생이 안되는 문제 해결을 위한 것.
+app.use(function(req, res, next) {
+    res.setHeader("Content-Security-Policy", "script-src 'self' https://archive.org");
+    return next();
+    });
+
 app.set('view engine', 'pug');
 
 app.use(cookieParser());
