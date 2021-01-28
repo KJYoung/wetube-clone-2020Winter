@@ -1,44 +1,90 @@
 import routes from "../routes";
 import Video from "../models/Video";
 
-export const homeController = async(req, res) => {
-    try {
-        const videos = await Video.find({});
-        //throw Error("Can you see it?");
-        return res.render('home', { pageTitle : 'Home', videos});
-    } catch(error){
-        console.log(error);
-        return res.render('home', { pageTitle : 'Home', videos : []});
-    }
-    
+export const homeController = async (req, res) => {
+  try {
+    const videos = await Video.find({}).sort({ _id: -1 });
+    return res.render("home", { pageTitle: "Home", videos });
+  } catch (error) {
+    console.log(error);
+    return res.render("home", { pageTitle: "Home", videos: [] });
+  }
 };
 export const searchController = (req, res) => {
-    //console.log(req.query);
-    //const searchingBy = req.query.term; 아래와 동일함! 아래는 ES6방식
-    const {query: { term : searchingBy}} = req;
-    res.render('search', { pageTitle : 'Search', searchingBy: searchingBy, videos: videos});
+  //console.log(req.query);
+  //const searchingBy = req.query.term; 아래와 동일함! 아래는 ES6방식
+  const {
+    query: { term: searchingBy },
+  } = req;
+  res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
 
 export const uploadGETController = (req, res) => {
-    res.render('upload', { pageTitle : 'Upload'});
+  res.render("upload", { pageTitle: "Upload" });
 };
-export const uploadPOSTController = async(req, res) => {
-    const {
-        file: { path },
-        body: { title, description }
-    } = req;
+export const uploadPOSTController = async (req, res) => {
+  const {
+    file: { path },
+    body: { title, description },
+  } = req;
 
-    const newVideo = await Video.create({
-        fileUrl: path, 
-        title, description});
-    //TODO : video upload and save.
-    console.log(newVideo);
-    
-    res.redirect(routes.videoDetail(newVideo.id)); //fake ID
+  const newVideo = await Video.create({
+    fileUrl: path,
+    title,
+    description,
+  });
+  //TODO : video upload and save.
+  console.log(newVideo);
+  res.redirect(routes.videoDetail(newVideo.id)); //fake ID
 };
 
+export const videoDetailController = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    const video = await Video.findById(id);
+    res.render("videoDetail", { pageTitle: video.title, video });
+  } catch (error) {
+    console.log(error);
+    res.redirect(routes.home);
+  }
+};
 
-export const videosController = (req, res) => res.render('videos', { pageTitle : 'Videos'});
-export const videoDetailController = (req, res) => res.render('videoDetail', { pageTitle : 'VideosDetail'});
-export const editVideoController = (req, res) => res.render('editVideo', { pageTitle : 'EditVideo'});
-export const deleteVideoController = (req, res) => res.render('deleteVideo', { pageTitle : 'DeleteVideo'});
+export const editVideoGETController = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    const video = await Video.findById(id);
+    res.render("editVideo", { pageTitle: `Edit ${video.title}`, video });
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+};
+
+export const editVideoPOSTController = async (req, res) => {
+  const {
+    params: { id },
+    body: { title, description },
+  } = req;
+  try {
+    await Video.findOneAndUpdate({ _id: id }, { title, description });
+    res.redirect(routes.videoDetail(id));
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+};
+export const deleteVideoController = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    await Video.findOneAndRemove({ _id: id });
+  } catch (error) {
+    console.log(error);
+  }
+  res.redirect(routes.home);
+};
+export const videosController = (req, res) =>
+  res.render("videos", { pageTitle: "Videos" });
