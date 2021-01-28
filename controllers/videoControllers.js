@@ -10,12 +10,22 @@ export const homeController = async (req, res) => {
     return res.render("home", { pageTitle: "Home", videos: [] });
   }
 };
-export const searchController = (req, res) => {
-  //console.log(req.query);
+export const searchController = async (req, res) => {
   //const searchingBy = req.query.term; 아래와 동일함! 아래는 ES6방식
   const {
     query: { term: searchingBy },
   } = req;
+  let videos = [];
+  try {
+    videos = await Video.find({
+      $or: [
+        { title: { $regex: searchingBy, $options: "i" } },
+        { description: { $regex: searchingBy, $options: "i" } },
+      ],
+    });
+  } catch (error) {
+    console.log(error);
+  }
   res.render("search", { pageTitle: "Search", searchingBy, videos });
 };
 
