@@ -1,5 +1,5 @@
 import "../scss/styles.scss";
 
-const sex = async (arg) => {
-  console.log("Aht");
+const sup = async (arg) => {
+  console.log("Assst");
 };

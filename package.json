@@ -4,8 +4,8 @@
   "description": "Cloning Youtube with VanillaJS and NodeJS GOGO!",
   "main": "index.js",
   "scripts": {
-    "dev:server": "nodemon --exec babel-node init.js --delay 1",
-    "dev:assets": "cross-env WEBPACK_ENV=development webpack -w",
+    "dev:server": "nodemon --exec babel-node init.js --delay 1 --ignore 'scss'",
+    "dev:assets": "cross-env WEBPACK_ENV=development webpack",
     "build:assets": "cross-env WEBPACK_ENV=production webpack"
   },
   "author": "KimJunYoung",
@@ -13,6 +13,7 @@
   "dependencies": {
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
+    "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
