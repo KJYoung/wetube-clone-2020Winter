@@ -96,5 +96,3 @@ export const deleteVideoController = async (req, res) => {
   }
   res.redirect(routes.home);
 };
-export const videosController = (req, res) =>
-  res.render("videos", { pageTitle: "Videos" });

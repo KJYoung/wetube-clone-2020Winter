@@ -1,9 +1,11 @@
+import passport from "passport";
 import routes from "../routes";
+import User from "../models/User";
 
 export const joinGETController = (req, res) =>
   res.render("join", { pageTitle: "Join" });
 
-export const joinPOSTController = (req, res) => {
+export const joinPOSTController = async (req, res, next) => {
   const {
     body: { name, email, password, password2 },
   } = req;
@@ -12,19 +14,31 @@ export const joinPOSTController = (req, res) => {
     return res.render("join", { pageTitle: "Join" });
   } else {
     //TODO : Register USER & Log in.
-    res.redirect(routes.home);
+    try {
+      const user = await User({
+        name,
+        email,
+      });
+      await User.register(user, password);
+      next();
+    } catch (error) {
+      console.log(error);
+      res.redirect(routes.home); //개선 지점.
+    }
   }
 };
 
 export const loginGETController = (req, res) => {
-  res.render("login", { pageTitle: "Login" });
+  return res.render("login", { pageTitle: "Login" });
 };
 
-export const loginPOSTController = (req, res) => {
-  res.redirect(routes.home);
-};
+export const loginPOSTController = passport.authenticate("local", {
+  successRedirect: routes.home,
+  failureRedirect: routes.login,
+});
+
 export const logoutController = (req, res) => {
-  //TODO Process log out
+  req.logout();
   res.redirect(routes.home);
 };
 export const usersController = (req, res) =>
