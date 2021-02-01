@@ -11,11 +11,14 @@ import {
   loginGETController,
   loginPOSTController,
   logoutController,
+  meController,
 } from "../controllers/userControllers";
 import { onlyPrivate, onlyPublic } from "../middlewares";
 import {
+  facebookLogin,
+  facebookLoginPOST,
   githubLogin,
-  githubLoginPOSTLogin,
+  githubLoginPOST,
 } from "../controllers/socialLoginControllers";
 
 const globalRouter = express.Router();
@@ -38,11 +41,16 @@ globalRouter.get(routes.search, searchController);
 globalRouter.get(routes.github, githubLogin);
 globalRouter.get(
   routes.githubCallback,
-  passport.authenticate(
-    "github",
-    { failureRedirect: routes.login },
-    githubLoginPOSTLogin
-  )
+  passport.authenticate("github", { failureRedirect: routes.login }),
+  githubLoginPOST
 );
 
+globalRouter.get(routes.facebook, facebookLogin);
+globalRouter.get(
+  routes.facebookCallback,
+  passport.authenticate("facebook", { failureRedirect: routes.login }),
+  facebookLoginPOST
+);
+
+globalRouter.get(routes.me, meController);
 export default globalRouter;

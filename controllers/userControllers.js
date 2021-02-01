@@ -43,8 +43,23 @@ export const logoutController = (req, res) => {
 };
 export const usersController = (req, res) =>
   res.render("users", { pageTitle: "Users" });
-export const userDetailController = (req, res) =>
-  res.render("userDetail", { pageTitle: "UserDetail" });
+
+export const meController = (req, res) => {
+  res.render("userDetail", { pageTitle: "UserDetail", user: req.user });
+};
+
+export const userDetailController = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  try {
+    const user = await User.findById(id);
+    res.render("userDetail", { pageTitle: "UserDetail", user });
+  } catch (error) {
+    res.redirect(routes.home);
+  }
+};
+
 export const editProfileController = (req, res) =>
   res.render("editProfile", { pageTitle: "EditProfile" });
 export const changePasswordController = (req, res) =>

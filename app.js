@@ -7,6 +7,8 @@ import passport from "passport";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
+import fs from "fs";
+import https from "https";
 
 import dotenv from "dotenv";
 
@@ -20,7 +22,13 @@ import "./passport";
 
 dotenv.config();
 
+const key = fs.readFileSync("./key.pem");
+const cert = fs.readFileSync("./cert.pem");
+
 const app = express();
+
+export const server = https.createServer({ key, cert }, app);
+
 const CookieStore = MongoStore(session);
 
 app.use(helmet());
