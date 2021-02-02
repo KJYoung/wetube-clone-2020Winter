@@ -20,7 +20,6 @@ export const githubLoginCallback = async (
 
       //정보 덮어쓰기 : #6.9 댓글에서 보고 떠오름.
       user.avatarUrl = avatarUrl;
-      user.name = name;
 
       user.save();
       return cb(null, user);
@@ -30,6 +29,7 @@ export const githubLoginCallback = async (
         name,
         githubId: id,
         avatarUrl,
+        localId: false,
       });
       return cb(null, newUser);
     }
@@ -61,7 +61,6 @@ export const facebookLoginCallback = async (
 
       //정보 덮어쓰기 : #6.9 댓글에서 보고 떠오름.
       user.avatarUrl = avatarUrl;
-      user.name = name;
 
       user.save();
       return cb(null, user);
@@ -71,6 +70,7 @@ export const facebookLoginCallback = async (
         name,
         facebookId: id,
         avatarUrl,
+        localId: false,
       });
       return cb(null, newUser);
     }

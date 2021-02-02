@@ -13,9 +13,9 @@ import https from "https";
 import dotenv from "dotenv";
 
 import { localsMiddleware } from "./middlewares";
+import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
-import globalRouter from "./routers/globalRouter";
 import routes from "./routes";
 
 import "./passport";

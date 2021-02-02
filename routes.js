@@ -25,6 +25,9 @@ const GITHUB_CALLBACK = "/auth/github/callback";
 const FACEBOOK = "/auth/facebook";
 const FACEBOOK_CALLBACK = "/auth/facebook/callback";
 
+//Asset
+const DEFAULT_AVATAR = "/uploads/default.png";
+
 const routes = {
   home: HOME,
   join: JOIN,
@@ -69,6 +72,7 @@ const routes = {
   githubCallback: GITHUB_CALLBACK,
   facebook: FACEBOOK,
   facebookCallback: FACEBOOK_CALLBACK,
+  defaultAvatar: DEFAULT_AVATAR,
 };
 
 export default routes;
