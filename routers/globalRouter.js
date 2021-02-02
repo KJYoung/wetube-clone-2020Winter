@@ -52,5 +52,5 @@ globalRouter.get(
   facebookLoginPOST
 );
 
-globalRouter.get(routes.me, meController);
+globalRouter.get(routes.me, onlyPrivate, meController);
 export default globalRouter;

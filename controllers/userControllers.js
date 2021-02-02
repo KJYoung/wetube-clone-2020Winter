@@ -70,14 +70,21 @@ export const editProfilePOSTController = async (req, res) => {
     body: { name },
     file,
   } = req;
-  const email = req.body.email ? req.body.email : req.user.email;
+
+  const oldEmail = req.user.email;
+  const newEmail = req.body.email ? req.body.email : oldEmail;
+
   try {
     await User.findByIdAndUpdate(req.user.id, {
       name,
-      email,
+      email: newEmail,
       avatarUrl: file ? file.path : req.user.avatarUrl,
     });
-    res.redirect(routes.home);
+    if (newEmail === oldEmail) {
+      res.redirect(routes.me);
+    } else {
+      res.redirect(routes.home);
+    }
   } catch (error) {
     res.render("editProfile", { pageTitle: "EditProfile" });
   }
