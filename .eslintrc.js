@@ -16,5 +16,11 @@ module.exports = {
     "comma-dangle": "off",
     "consistent-return": "off",
     indent: "off",
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
   },
 };

@@ -10,10 +10,15 @@
   .video__info {
     width: 100%;
     max-width: 850px;
-    margin-top: 25px;
+    margin-top: 45px;
     button {
       width: 120px;
       margin-bottom: 15px;
+    }
+    .video__author {
+      a {
+        color: $material-blue;
+      }
     }
     .video__title,
     .video__views,
