@@ -1,14 +1,16 @@
 mixin videoBlock(video = {})
     .videoBlock
         a(href=routes.videoDetail(video.id))
-            video.videoBlock__thumbnail(src=`/${video.videoFile}`)
+            .videoBlock__thumbnail-background
+                video.videoBlock__thumbnail(src=`/${video.videoFile}`)
             h4.videoBlock__title=video.title
-            if video.views === 1
-                h6.videoBlock__views 1 view
-            else
-                h6.videoBlock__views #{video.views} views    
-            if video.likes === 1
-                h6.videoBlock__likes 1 like
-            else
-                h6.videoBlock__likes #{video.likes} likes    
+            .videoBlock__views-likes
+                if video.views === 1
+                    h6.videoBlock__views 1 view
+                else
+                    h6.videoBlock__views #{video.views} views    
+                if video.likes === 1
+                    h6.videoBlock__likes 1 like
+                else
+                    h6.videoBlock__likes #{video.likes} likes    
             h6.videoBlock__createdAt #{video.createdAt.getMonth()+1}/#{video.createdAt.getDate()} 에 생성됨.
