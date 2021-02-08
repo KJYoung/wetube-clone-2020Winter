@@ -90,6 +90,10 @@ function setTotalTime() {
   totalTime.innerHTML = formatDate(videoPlayer.duration);
 }
 
+function setCurrentTime() {
+  currentTime.innerHTML = formatDate(videoPlayer.currentTime);
+}
+
 function init() {
   videoPlayer = videoContainer.querySelector("video");
   playBtn = document.getElementById("jsPlayButton");
@@ -98,11 +102,13 @@ function init() {
   currentTime = document.getElementById("currentTime");
   totalTime = document.getElementById("totalTime");
 
+  videoPlayer.addEventListener("click", handlePlayClick);
   playBtn.addEventListener("click", handlePlayClick);
   volumeBtn.addEventListener("click", handleVolumeClick);
   fullScrnBtn.addEventListener("click", handleExpandScreen);
   videoPlayer.addEventListener("loadedmetadata", setTotalTime);
-
+  videoPlayer.addEventListener("timeupdate", setCurrentTime);
+  setTotalTime();
   // document.documentElement.webkitRequestFullScreen(
   //   Element.ALLOW_KEYBOARD_INPUT
   // );
