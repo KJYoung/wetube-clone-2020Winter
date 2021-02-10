@@ -5,70 +5,7 @@ let volumeBtn;
 let fullScrnBtn;
 let currentTime;
 let totalTime;
-
-function handlePlayClick() {
-  if (videoPlayer.paused) {
-    videoPlayer.play();
-    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
-  } else {
-    videoPlayer.pause();
-    playBtn.innerHTML = '<i class="fas fa-play"></i>';
-  }
-}
-
-function handleVolumeClick() {
-  if (videoPlayer.muted) {
-    videoPlayer.muted = false;
-    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-  } else {
-    videoPlayer.muted = true;
-    volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-  }
-}
-
-function exitHandler() {
-  document.removeEventListener("keydown", handleESC);
-  fullScrnBtn.innerHTML = '<i class="fas fa-expand"></i>';
-  fullScrnBtn.removeEventListener("click", handleCompressScreen);
-  fullScrnBtn.addEventListener("click", handleExpandScreen);
-}
-
-function handleESC(e) {
-  e.preventDefault();
-  if (e.key === "Escape") {
-    exitHandler();
-  }
-}
-function handleExpandScreen() {
-  if (videoContainer.requestFullscreen) {
-    videoContainer.requestFullscreen();
-  } else if (videoContainer.mozRequestFullScreen) {
-    videoContainer.mozRequestFullScreen();
-  } else if (videoContainer.webkitRequestFullscreen) {
-    videoContainer.webkitRequestFullscreen();
-  } else if (videoContainer.msRequestFullscreen) {
-    videoContainer.msRequestFullscreen();
-  }
-  //videoPlayer.requestFullscreen();으로도 현재 작동하긴 한다.
-
-  fullScrnBtn.innerHTML = '<i class="fas fa-compress"></i>';
-  fullScrnBtn.removeEventListener("click", handleExpandScreen);
-  fullScrnBtn.addEventListener("click", handleCompressScreen);
-  document.addEventListener("keydown", handleESC);
-}
-
-function handleCompressScreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
-  }
-  exitHandler();
-}
+let volumeRange;
 
 function formatDate(inputSeconds) {
   const secondsNumber = parseInt(inputSeconds, 10);
@@ -86,21 +23,119 @@ function formatDate(inputSeconds) {
     return `${minutes}:${seconds}`;
   }
 }
+
+function handleVolumeIcon(value) {
+  if (value > 0.7) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+  } else if (value > 0.4) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-down"></i>';
+  } else if (value > 0) {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-off"></i>';
+  } else {
+    volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+  }
+}
+
+function handlePlayClick() {
+  if (videoPlayer.paused) {
+    videoPlayer.play();
+    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+  } else {
+    videoPlayer.pause();
+    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+  }
+}
+
+function handleVolumeClick() {
+  if (videoPlayer.muted) {
+    videoPlayer.muted = false;
+    volumeRange.value = videoPlayer.volume;
+    handleVolumeIcon(value);
+  } else {
+    videoPlayer.muted = true;
+    volumeRange.value = 0;
+    volumeBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+  }
+}
+
+function exitHandler() {
+  videoPlayer.classList.toggle("video__notFullScreen");
+  fullScrnBtn.innerHTML = '<i class="fas fa-expand"></i>';
+  fullScrnBtn.removeEventListener("click", handleCompressScreen);
+  fullScrnBtn.addEventListener("click", handleExpandScreen);
+}
+
+function handleExpandScreen() {
+  if (videoContainer.requestFullscreen) {
+    videoContainer.requestFullscreen();
+  } else if (videoContainer.mozRequestFullScreen) {
+    videoContainer.mozRequestFullScreen();
+  } else if (videoContainer.webkitRequestFullscreen) {
+    videoContainer.webkitRequestFullscreen();
+  } else if (videoContainer.msRequestFullscreen) {
+    videoContainer.msRequestFullscreen();
+  }
+  videoPlayer.classList.toggle("video__notFullScreen");
+
+  fullScrnBtn.innerHTML = '<i class="fas fa-compress"></i>';
+  fullScrnBtn.removeEventListener("click", handleExpandScreen);
+  fullScrnBtn.addEventListener("click", handleCompressScreen);
+}
+
+function handleCompressScreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+  exitHandler();
+}
+
 function setTotalTime() {
-  totalTime.innerHTML = formatDate(videoPlayer.duration);
+  totalTime.innerHTML = formatDate(Math.floor(videoPlayer.duration));
 }
 
 function setCurrentTime() {
   currentTime.innerHTML = formatDate(videoPlayer.currentTime);
 }
 
+function handleRestart() {
+  videoPlayer.currentTime = 0;
+  videoPlayer.play();
+  playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+  playBtn.addEventListener("click", handlePlayClick);
+  playBtn.removeEventListener("click", handleRestart);
+}
+
+function handleEnded() {
+  videoPlayer.pause();
+  playBtn.innerHTML = '<i class="fas fa-undo"></i>';
+  playBtn.removeEventListener("click", handlePlayClick);
+  playBtn.addEventListener("click", handleRestart);
+}
+
+function handleDrag(e) {
+  const {
+    target: { value },
+  } = e;
+  videoPlayer.volume = value;
+  handleVolumeIcon(value);
+}
+
 function init() {
   videoPlayer = videoContainer.querySelector("video");
-  playBtn = document.getElementById("jsPlayButton");
-  volumeBtn = document.getElementById("jsVolumeButton");
+  playBtn = document.getElementById("jsPlayBtn");
+  volumeBtn = document.getElementById("jsVolumeBtn");
   fullScrnBtn = document.getElementById("jsFullScreen");
   currentTime = document.getElementById("currentTime");
   totalTime = document.getElementById("totalTime");
+  volumeRange = document.getElementById("jsVolume");
+
+  videoPlayer.volume = 0.5;
 
   videoPlayer.addEventListener("click", handlePlayClick);
   playBtn.addEventListener("click", handlePlayClick);
@@ -108,10 +143,10 @@ function init() {
   fullScrnBtn.addEventListener("click", handleExpandScreen);
   videoPlayer.addEventListener("loadedmetadata", setTotalTime);
   videoPlayer.addEventListener("timeupdate", setCurrentTime);
+  videoPlayer.addEventListener("ended", handleEnded);
+
+  volumeRange.addEventListener("input", handleDrag);
   setTotalTime();
-  // document.documentElement.webkitRequestFullScreen(
-  //   Element.ALLOW_KEYBOARD_INPUT
-  // );
 }
 
 if (videoContainer) {

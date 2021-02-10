@@ -46,7 +46,7 @@ export const uploadPOSTController = async (req, res) => {
   });
   req.user.videos.push(newVideo.id);
   await req.user.save();
-  res.redirect(routes.videoDetail(newVideo.id)); //fake ID
+  res.redirect(routes.videoDetail(newVideo.id));
 };
 
 export const videoDetailController = async (req, res) => {
