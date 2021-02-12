@@ -28,19 +28,27 @@ block content
         ideo.creator.name
         .video__comments
             if video.comments.length === 1
-                span.video__comment-number 1 comment
+                span.video__comment-number#jsCommentNumberOuterSpan
+                    span#jsCommentNumber 1
+                    |  comment
             else
-                span.video__comment-number #{video.comments.length} comments
+                span.video__comment-number#jsCommentNumberOuterSpan
+                    span#jsCommentNumber=video.comments.length
+                    |  comments
             form.add__comment#jsAddComment
                 if loggedUser 
                     input(type="text", placeholder="Add a comment")
                 else 
                     input(type="text", placeholder="Please Login for writing comments.", disabled)
-            ul.video__comments-list
-                each comment in video.comments
-                    if comment.creator == video.creator.id
-                        li.author-comments
-                            span=comment.text
+            ul.video__comments-list#jsCommentList
+                -for(let index = video.comments.length-1; index >= 0; index--)
+                    if video.comments[index].creator == video.creator.id
+                        li.author-comments(id=`comm${index}`)
+                            span=video.comments[index].text
+                            if video.comments[index].creator == loggedUser.id
+                                button.delComBtn ❌
                     else
-                        li
-                            span=comment.text
+                        li(id=`comm${index}`)
+                            span=video.comments[index].text
+                            if video.comments[index].creator == loggedUser.id
+                                button.delComBtn ❌
