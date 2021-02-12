@@ -24,7 +24,6 @@ block content
                 span.video__likes 1 like
             else
                 span.video__likes #{video.likes} likes    
-            span.video__likes=video.likes
             p.video__description=video.description
         ideo.creator.name
         .video__comments
@@ -32,4 +31,16 @@ block content
                 span.video__comment-number 1 comment
             else
                 span.video__comment-number #{video.comments.length} comments
-                
+            form.add__comment#jsAddComment
+                if loggedUser 
+                    input(type="text", placeholder="Add a comment")
+                else 
+                    input(type="text", placeholder="Please Login for writing comments.", disabled)
+            ul.video__comments-list
+                each comment in video.comments
+                    if comment.creator == video.creator.id
+                        li.author-comments
+                            span=comment.text
+                    else
+                        li
+                            span=comment.text

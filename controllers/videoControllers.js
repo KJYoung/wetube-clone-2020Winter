@@ -54,7 +54,9 @@ export const videoDetailController = async (req, res) => {
     params: { id },
   } = req;
   try {
-    const video = await Video.findById(id).populate("creator");
+    const video = await Video.findById(id)
+      .populate("creator")
+      .populate("comments");
     res.render("videoDetail", {
       pageTitle: video.title,
       video,
@@ -94,6 +96,7 @@ export const editVideoPOSTController = async (req, res) => {
     res.redirect(routes.home);
   }
 };
+
 export const deleteVideoController = async (req, res) => {
   const {
     params: { id },

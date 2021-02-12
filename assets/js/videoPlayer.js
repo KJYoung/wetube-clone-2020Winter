@@ -1,3 +1,5 @@
+import { registerViewController } from "../../controllers/apiControllers";
+
 const videoContainer = document.getElementById("jsVideoPlayer");
 let videoPlayer;
 let playBtn;
@@ -6,6 +8,13 @@ let fullScrnBtn;
 let currentTime;
 let totalTime;
 let volumeRange;
+
+function registerView() {
+  const videoId = window.location.href.split("/videos/")[1];
+  fetch(`/api/${videoId}/view`, {
+    method: "POST",
+  });
+}
 
 function formatDate(inputSeconds) {
   const secondsNumber = parseInt(inputSeconds, 10);
@@ -50,7 +59,7 @@ function handleVolumeClick() {
   if (videoPlayer.muted) {
     videoPlayer.muted = false;
     volumeRange.value = videoPlayer.volume;
-    handleVolumeIcon(value);
+    handleVolumeIcon(volumeRange.value);
   } else {
     videoPlayer.muted = true;
     volumeRange.value = 0;
@@ -127,6 +136,8 @@ function handleDrag(e) {
 }
 
 function init() {
+  registerView();
+
   videoPlayer = videoContainer.querySelector("video");
   playBtn = document.getElementById("jsPlayBtn");
   volumeBtn = document.getElementById("jsVolumeBtn");

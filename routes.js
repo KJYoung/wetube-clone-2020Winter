@@ -25,6 +25,11 @@ const GITHUB_CALLBACK = "/auth/github/callback";
 const FACEBOOK = "/auth/facebook";
 const FACEBOOK_CALLBACK = "/auth/facebook/callback";
 
+//API
+const API = "/api";
+const REGISTER_VIEW = "/:id/view";
+const ADD_COMMENT = "/:id/comment";
+const REGISTER_LIKE = "/:id/like";
 //Asset
 const DEFAULT_AVATAR = "/uploads/default.png";
 
@@ -73,6 +78,10 @@ const routes = {
   facebook: FACEBOOK,
   facebookCallback: FACEBOOK_CALLBACK,
   defaultAvatar: DEFAULT_AVATAR,
+  api: API,
+  registerView: REGISTER_VIEW,
+  addComment: ADD_COMMENT,
+  registerLike: REGISTER_LIKE,
 };
 
 export default routes;
