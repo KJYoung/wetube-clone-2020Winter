@@ -78,7 +78,7 @@ export const editProfilePOSTController = async (req, res) => {
     await User.findByIdAndUpdate(req.user.id, {
       name,
       email: newEmail,
-      avatarUrl: file ? file.path : req.user.avatarUrl,
+      avatarUrl: file ? file.location : req.user.avatarUrl,
     });
     if (newEmail === oldEmail) {
       res.redirect(routes.me);

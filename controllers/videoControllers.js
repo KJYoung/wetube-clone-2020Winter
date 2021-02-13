@@ -34,12 +34,12 @@ export const uploadGETController = (req, res) => {
 };
 export const uploadPOSTController = async (req, res) => {
   const {
-    file: { path },
+    file: { location },
     body: { title, description },
   } = req;
 
   const newVideo = await Video.create({
-    fileUrl: path,
+    fileUrl: location,
     title,
     description,
     creator: req.user.id,

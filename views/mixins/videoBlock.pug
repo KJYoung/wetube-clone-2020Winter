@@ -2,10 +2,10 @@ mixin videoBlock(video = {})
     .videoBlock
         a(href=routes.videoDetail(video.id))
             .videoBlock__thumbnail-background
-                video.videoBlock__thumbnail(src=`/${video.videoFile}`)
+                video.videoBlock__thumbnail(src=video.videoFile)
             .videoBlock__rows
                 .videoBlock__columns
-                    img.user-avatar-small(src=`${video.avatarUrl}`)
+                    img.user-avatar-small(src=video.avatarUrl)
                 .videoBlock__columns
                     h4.videoBlock__title=video.title
                     .videoBlock__views-likes

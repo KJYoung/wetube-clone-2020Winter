@@ -1,4 +1,4 @@
-import { registerViewController } from "../../controllers/apiControllers";
+//import getBlobDuration from "get-blob-duration";
 
 const videoContainer = document.getElementById("jsVideoPlayer");
 let videoPlayer;
@@ -105,6 +105,10 @@ function handleCompressScreen() {
 }
 
 function setTotalTime() {
+  //const blob = await fetch(videoPlayer.src).then((response) => response.blob());
+  //const duration = await getBlobDuration(blob);
+  //blob 개선 필요.
+
   totalTime.innerHTML = formatDate(Math.floor(videoPlayer.duration));
 }
 
