@@ -43,12 +43,12 @@ block content
             ul.video__comments-list#jsCommentList
                 -for(let index = video.comments.length-1; index >= 0; index--)
                     if video.comments[index].creator == video.creator.id
-                        li.author-comments(id=`comm${index}`)
+                        li.author-comments(id=`${video.comments[index].id}`)
                             span=video.comments[index].text
-                            if video.comments[index].creator == loggedUser.id
+                            if loggedUser && video.comments[index].creator == loggedUser.id
                                 button.delComBtn ❌
                     else
-                        li(id=`comm${index}`)
+                        li(id=`${video.comments[index].id}`)
                             span=video.comments[index].text
-                            if video.comments[index].creator == loggedUser.id
+                            if loggedUser && video.comments[index].creator == loggedUser.id
                                 button.delComBtn ❌
