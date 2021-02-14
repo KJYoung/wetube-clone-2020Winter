@@ -1,7 +1,7 @@
 import "@babel/polyfill";
 import dotenv from "dotenv";
 import "./db";
-import { server } from "./app";
+import app from "./app";
 
 import "./models/Video";
 import "./models/Comment";
@@ -15,4 +15,4 @@ const handleListening = () => {
   console.log(`✅ Listening on : https://localhost:${PORT}`);
 };
 
-server.listen(PORT, handleListening);
+app.listen(PORT, handleListening);
