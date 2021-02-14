@@ -9,7 +9,5 @@ import "./models/User";
 
 dotenv.config();
 
-const PORT = process.env.MY_PORT || 5000;
-
-app.listen(PORT);
+app.listen(process.env.MY_PORT || 5000);
 //server.listen(PORT);
