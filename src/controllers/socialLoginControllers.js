@@ -2,7 +2,10 @@ import passport from "passport";
 import routes from "../routes";
 import User from "../models/User";
 
-export const githubLogin = passport.authenticate("github");
+export const githubLogin = passport.authenticate("github", {
+  successFlash: "Welcome to Wetube!",
+  failureFlash: "Can't log in. Check the inputs",
+});
 
 export const githubLoginCallback = async (
   accessToken,
@@ -42,7 +45,10 @@ export const githubLoginPOST = (req, res) => {
   res.redirect(routes.home);
 };
 
-export const facebookLogin = passport.authenticate("facebook");
+export const facebookLogin = passport.authenticate("facebook", {
+  successFlash: "Welcome to Wetube!",
+  failureFlash: "Can't log in. Check the inputs",
+});
 
 export const facebookLoginCallback = async (
   accessToken,

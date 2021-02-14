@@ -8,6 +8,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import path from "path";
+import flash from "express-flash";
 //import fs from "fs";
 //import https from "https";
 
@@ -57,6 +58,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
+app.use(flash());
 app.use(
   session({
     secret: process.env.COOKIE_SECRET,
