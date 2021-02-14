@@ -3,16 +3,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URL, {
+//const MONGO_CONNECTION = process.env.MONGO_URL;
+const MONGO_CONNECTION = process.env.MONGO_URL_PROD_ATLAS;
+
+mongoose.connect(MONGO_CONNECTION, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
-// mongoose.connect(process.env.MONGO_URL_PROD_ATLAS, {
-//   useNewUrlParser: true,
-//   useFindAndModify: false,
-//   useUnifiedTopology: true,
-// });
 
 const db = mongoose.connection;
 

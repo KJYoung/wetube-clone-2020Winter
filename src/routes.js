@@ -32,7 +32,8 @@ const ADD_COMMENT = "/:id/comment";
 const DELETE_COMMENT = "/:id/delete-comment";
 const REGISTER_LIKE = "/:id/like";
 //Asset
-const DEFAULT_AVATAR = "/uploads/default.png";
+const DEFAULT_AVATAR =
+  "https://wetube-kim.s3.ap-northeast-2.amazonaws.com/default.png";
 
 const routes = {
   home: HOME,
