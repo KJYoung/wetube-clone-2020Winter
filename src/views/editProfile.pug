@@ -1,0 +1,14 @@
+extends layouts/main
+
+block content
+    .form-container
+        form(action=`/users${routes.editProfile}`, method="post", enctype="multipart/form-data")
+            .fileUpload
+                label(for="avatar") Avatar
+                input(type='file', id="avatar", name="avatar", accept="image/*")
+            input(type='text', placeholder="Name", name="name", value=loggedUser.name)
+            if !loggedUser.localId
+                input(type='email', name="email", value=loggedUser.email, disabled)
+            else
+                input(type='email', name="email", value=loggedUser.email)
+            input(type="submit", value="Update Profile")

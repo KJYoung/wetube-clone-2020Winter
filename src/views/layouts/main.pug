@@ -1,0 +1,15 @@
+doctype html
+html
+    head
+        link(rel="shortcut icon", type="image/x-icon", href="https://cafeptthumb-phinf.pstatic.net/MjAyMTAxMjdfNTYg/MDAxNjExNjczMzY1MDEx.GvLh_0bCRtpVMjS1HXSsy-5YuuuwYEQ28YkoTaKlQNEg.A1fwICYPkJap5g5mC26X8eUCQUtcAFz8dDlpnWU58Zgg.PNG/wetube_logo.png?type=w1600")
+        link(rel="stylesheet",href="https://use.fontawesome.com/releases/v5.15.1/css/all.css",integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp",crossorigin="anonymous")
+        link(rel="stylesheet",href="/static/styles.css")
+        title  #{pageTitle} | #{siteName}
+        meta(http-equiv="Content-Security-Policy" content="default-src *")
+
+    body
+        include ../partials/header
+        main
+            block content
+        include ../partials/footer
+        script(src="/static/main.js")
