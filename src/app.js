@@ -25,12 +25,14 @@ import "./passport";
 
 dotenv.config();
 
-// const key = fs.readFileSync("./key.pem");
-// const cert = fs.readFileSync("./cert.pem");
-
 const app = express();
 
-//export const server = https.createServer({ key, cert }, app);
+// if(!process.env.PRODUCTION){
+//   const key = fs.readFileSync("./key.pem");
+//   const cert = fs.readFileSync("./cert.pem");
+
+//   export const server = https.createServer({ key, cert }, app);
+// }
 
 const CookieStore = MongoStore(session);
 
