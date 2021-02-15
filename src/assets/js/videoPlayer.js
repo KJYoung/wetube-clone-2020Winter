@@ -2,12 +2,18 @@
 
 const videoContainer = document.getElementById("jsVideoPlayer");
 let videoPlayer;
+let videoController;
 let playBtn;
+let playRange;
 let volumeBtn;
 let fullScrnBtn;
 let currentTime;
 let totalTime;
+let timeIndicator;
 let volumeRange;
+let timeout;
+
+let BLOB_STATE = false;
 
 function registerView() {
   const videoId = window.location.href.split("/videos/")[1];
@@ -17,15 +23,17 @@ function registerView() {
 }
 
 function formatDate(inputSeconds) {
+  if (Number.isNaN(inputSeconds) || !Number.isFinite(inputSeconds)) {
+    BLOB_STATE = true;
+    return `?:??`;
+  }
   const secondsNumber = parseInt(inputSeconds, 10);
   const hours = Math.floor(secondsNumber / 3600);
   const minutes = Math.floor((secondsNumber - hours * 3600) / 60);
   let seconds = secondsNumber - hours * 3600 - minutes * 60;
-
   if (seconds < 10) {
     seconds = `0${seconds}`;
   }
-
   if (hours > 0) {
     return `${hours}:${minutes}:${seconds}`;
   } else {
@@ -110,10 +118,12 @@ function setTotalTime() {
   //blob 개선 필요.
 
   totalTime.innerHTML = formatDate(Math.floor(videoPlayer.duration));
+  playRange.max = videoPlayer.duration;
 }
 
 function setCurrentTime() {
   currentTime.innerHTML = formatDate(videoPlayer.currentTime);
+  playRange.value = videoPlayer.currentTime;
 }
 
 function handleRestart() {
@@ -129,9 +139,10 @@ function handleEnded() {
   playBtn.innerHTML = '<i class="fas fa-undo"></i>';
   playBtn.removeEventListener("click", handlePlayClick);
   playBtn.addEventListener("click", handleRestart);
+  playRange.value = playRange.max;
 }
 
-function handleDrag(e) {
+function volumeRangeListener(e) {
   const {
     target: { value },
   } = e;
@@ -139,15 +150,65 @@ function handleDrag(e) {
   handleVolumeIcon(value);
 }
 
+// NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+function checkKeyInput(e) {
+  if (e.keyCode === 32) {
+    //Space
+    e.preventDefault();
+    handlePlayClick();
+  }
+}
+function checkKeysInput(e) {
+  if (e.keyCode === 77) {
+    //M
+    e.preventDefault();
+    handleVolumeClick();
+  }
+}
+
+function checkMouseAFK() {
+  videoController.style.opacity = 1;
+  videoContainer.style.cursor = "pointer";
+
+  clearTimeout(timeout);
+  timeout = setTimeout(() => {
+    videoController.style.opacity = 0;
+    videoContainer.style.cursor = "none";
+  }, 5000);
+}
+
+function controllerHide() {
+  videoController.style.opacity = 0;
+}
+
+function resizeOptimizer() {
+  //console.log(window.innerWidth);
+  if (window.innerWidth < 800) {
+    timeIndicator.style.display = "none";
+  } else {
+    timeIndicator.style.display = "flex";
+  }
+}
+
+function playRangeListener(e) {
+  const {
+    target: { value },
+  } = e;
+  videoPlayer.currentTime = value;
+}
+
 function init() {
   registerView();
 
   videoPlayer = videoContainer.querySelector("video");
+  videoController = videoContainer.querySelector(".videoPlayer__controls");
   playBtn = document.getElementById("jsPlayBtn");
+  playRange = document.getElementById("jsPlayRange");
   volumeBtn = document.getElementById("jsVolumeBtn");
   fullScrnBtn = document.getElementById("jsFullScreen");
   currentTime = document.getElementById("currentTime");
   totalTime = document.getElementById("totalTime");
+  timeIndicator = document.getElementById("timeIndicator");
   volumeRange = document.getElementById("jsVolume");
 
   videoPlayer.volume = 0.5;
@@ -160,7 +221,16 @@ function init() {
   videoPlayer.addEventListener("timeupdate", setCurrentTime);
   videoPlayer.addEventListener("ended", handleEnded);
 
-  volumeRange.addEventListener("input", handleDrag);
+  videoContainer.addEventListener("mousemove", checkMouseAFK);
+  videoContainer.addEventListener("click", checkMouseAFK);
+  videoContainer.addEventListener("mouseout", controllerHide);
+
+  window.addEventListener("keypress", checkKeyInput);
+  window.addEventListener("keydown", checkKeysInput);
+  window.addEventListener("resize", resizeOptimizer);
+
+  volumeRange.addEventListener("input", volumeRangeListener);
+  playRange.addEventListener("input", playRangeListener);
   setTotalTime();
 }
 
