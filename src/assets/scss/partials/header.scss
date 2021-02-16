@@ -2,6 +2,8 @@
   width: 100%;
   background-color: $red;
   margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
   .header__wrapper {
     padding: 5px 0px;
     width: 100%;

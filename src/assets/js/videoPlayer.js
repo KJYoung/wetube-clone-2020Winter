@@ -1,5 +1,3 @@
-//import getBlobDuration from "get-blob-duration";
-
 const videoContainer = document.getElementById("jsVideoPlayer");
 let videoPlayer;
 let videoController;
@@ -11,9 +9,8 @@ let currentTime;
 let totalTime;
 let timeIndicator;
 let volumeRange;
+let volumeColumn;
 let timeout;
-
-let BLOB_STATE = false;
 
 function registerView() {
   const videoId = window.location.href.split("/videos/")[1];
@@ -24,7 +21,6 @@ function registerView() {
 
 function formatDate(inputSeconds) {
   if (Number.isNaN(inputSeconds) || !Number.isFinite(inputSeconds)) {
-    BLOB_STATE = true;
     return `?:??`;
   }
   const secondsNumber = parseInt(inputSeconds, 10);
@@ -113,10 +109,6 @@ function handleCompressScreen() {
 }
 
 function setTotalTime() {
-  //const blob = await fetch(videoPlayer.src).then((response) => response.blob());
-  //const duration = await getBlobDuration(blob);
-  //blob 개선 필요.
-
   totalTime.innerHTML = formatDate(Math.floor(videoPlayer.duration));
   playRange.max = videoPlayer.duration;
 }
@@ -150,12 +142,16 @@ function volumeRangeListener(e) {
   handleVolumeIcon(value);
 }
 
-// NEWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 function checkKeyInput(e) {
   if (e.keyCode === 32) {
     //Space
     e.preventDefault();
     handlePlayClick();
+  } else if (e.keyCode === 13) {
+    e.preventDefault();
+    if (videoPlayer.classList.contains("video__notFullScreen")) {
+      handleExpandScreen();
+    }
   }
 }
 function checkKeysInput(e) {
@@ -183,10 +179,15 @@ function controllerHide() {
 
 function resizeOptimizer() {
   //console.log(window.innerWidth);
-  if (window.innerWidth < 800) {
-    timeIndicator.style.display = "none";
-  } else {
+  if (window.innerWidth >= 900) {
+    volumeColumn.style.margin = "0px";
     timeIndicator.style.display = "flex";
+  } else if (window.innerWidth < 900 && window.innerWidth >= 650) {
+    volumeColumn.style.margin = "0px 10px";
+    timeIndicator.style.display = "flex";
+  } else if (window.innerWidth < 650) {
+    volumeColumn.style.margin = "0px 10px";
+    timeIndicator.style.display = "none";
   }
 }
 
@@ -210,6 +211,7 @@ function init() {
   totalTime = document.getElementById("totalTime");
   timeIndicator = document.getElementById("timeIndicator");
   volumeRange = document.getElementById("jsVolume");
+  volumeColumn = document.getElementById("volumeColumn");
 
   videoPlayer.volume = 0.5;
 
