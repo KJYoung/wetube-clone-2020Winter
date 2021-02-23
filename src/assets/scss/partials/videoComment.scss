@@ -1,0 +1,85 @@
+.video__comments-list {
+  margin-top: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  li {
+    font-weight: 350;
+    color: $black;
+    padding: 8px 20px 10px 0px;
+    width: 100%;
+    min-height: 25px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .commentColumn:first-child {
+      display: flex;
+      align-items: center;
+      margin-right: 8px;
+      img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+      }
+    }
+    .commentColumn:nth-child(2) {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      .commentContentRow:first-child {
+        margin-bottom: 5px;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.7);
+      }
+      .commentContentRow:nth-child(2) {
+        margin-bottom: 6px;
+        font-size: 15px;
+        color: black;
+      }
+      .commentContentRow:last-child {
+        color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: flex-start;
+        .likeContainer {
+          margin-right: 15px;
+          i {
+            margin-right: 10px;
+            cursor: pointer;
+          }
+          span {
+            margin-right: 10px;
+          }
+        }
+        #replyBtn {
+          cursor: pointer;
+        }
+      }
+    }
+    .commentColumn:last-child {
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+    .delComBtn {
+      width: auto;
+      margin-left: 10px;
+      padding: 0px;
+      font-size: 18px;
+      background-color: inherit;
+      box-shadow: none;
+    }
+    span {
+      text-align: left;
+    }
+  }
+  .jsJustWrittenComment {
+    align-self: center;
+    background-color: $material-blue;
+    color: white;
+    border-radius: 10px;
+  }
+}

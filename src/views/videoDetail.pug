@@ -1,5 +1,6 @@
 extends layouts/main
 include mixins/videoPlayer
+include mixins/videoComment
 
 block content
     .video-detail__container
@@ -25,7 +26,6 @@ block content
             else
                 span.video__likes #{video.likes} likes    
             p.video__description=video.description
-        ideo.creator.name
         .video__comments
             if video.comments.length === 1
                 span.video__comment-number#jsCommentNumberOuterSpan
@@ -37,18 +37,18 @@ block content
                     |  comments
             form.add__comment#jsAddComment
                 if loggedUser 
-                    input(type="text", placeholder="Add a comment")
+                    textarea#jsAddCommentText(rows="1", style="height:1em;", placeholder="Add a comment")
+                    .add__commentBtn
+                        button#add__commentCancel 취소
+                        input#add__commentSubmit(type="submit", value="댓글")
                 else 
                     input(type="text", placeholder="Please Login for writing comments.", disabled)
             ul.video__comments-list#jsCommentList
-                -for(let index = video.comments.length-1; index >= 0; index--)
-                    if video.comments[index].creator == video.creator.id
-                        li.author-comments(id=`${video.comments[index].id}`)
-                            span=video.comments[index].text
-                            if loggedUser && video.comments[index].creator == loggedUser.id
-                                button.delComBtn ❌
-                    else
-                        li(id=`${video.comments[index].id}`)
-                            span=video.comments[index].text
-                            if loggedUser && video.comments[index].creator == loggedUser.id
-                                button.delComBtn ❌
+                each comment in video.comments.reverse()
+                    +videoComment({
+                        isCreator : comment.creator.id == video.creator.id,
+                        isOwn : loggedUser ? comment.creator.id == loggedUser.id : false,
+                        commentId : comment.id,
+                        text : comment.text,
+                        creator : comment.creator
+                    })

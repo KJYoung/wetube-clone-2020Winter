@@ -56,7 +56,7 @@ export const videoDetailController = async (req, res) => {
   try {
     const video = await Video.findById(id)
       .populate("creator")
-      .populate("comments");
+      .populate({ path: "comments", populate: { path: "creator" } });
     res.render("videoDetail", {
       pageTitle: video.title,
       video,

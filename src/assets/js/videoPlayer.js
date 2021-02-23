@@ -11,6 +11,7 @@ let timeIndicator;
 let volumeRange;
 let volumeColumn;
 let timeout;
+let commentInput;
 
 function registerView() {
   const videoId = window.location.href.split("/videos/")[1];
@@ -143,11 +144,14 @@ function volumeRangeListener(e) {
 }
 
 function checkKeyInput(e) {
-  if (e.keyCode === 32) {
+  if (document.activeElement === commentInput) {
+    //
+  } else if (e.keyCode === 32) {
     //Space
     e.preventDefault();
     handlePlayClick();
   } else if (e.keyCode === 13) {
+    //Enter
     e.preventDefault();
     if (videoPlayer.classList.contains("video__notFullScreen")) {
       handleExpandScreen();
@@ -155,7 +159,9 @@ function checkKeyInput(e) {
   }
 }
 function checkKeysInput(e) {
-  if (e.keyCode === 77) {
+  if (document.activeElement === commentInput) {
+    //
+  } else if (e.keyCode === 77) {
     //M
     e.preventDefault();
     handleVolumeClick();
@@ -212,6 +218,8 @@ function init() {
   timeIndicator = document.getElementById("timeIndicator");
   volumeRange = document.getElementById("jsVolume");
   volumeColumn = document.getElementById("volumeColumn");
+
+  commentInput = document.getElementById("jsAddCommentText");
 
   videoPlayer.volume = 0.5;
 

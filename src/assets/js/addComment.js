@@ -5,6 +5,8 @@ let commentList;
 let commentNumber;
 let commentNumberOuterSpan;
 let delComButton;
+let jsAddCommentText;
+let jsAddCommentCancel;
 
 function addFakeComment(comment) {
   const li = document.createElement("li");
@@ -39,7 +41,7 @@ async function sendComment(comment) {
 
 function handleSubmit(event) {
   event.preventDefault();
-  const commentInput = addCommentForm.querySelector("input");
+  const commentInput = addCommentForm.querySelector("textarea");
   const comment = commentInput.value;
   sendComment(comment);
   commentInput.value = "";
@@ -79,11 +81,32 @@ async function handleDelete(event) {
   }
 }
 
+function OnInput() {
+  this.style.height = "auto";
+  this.style.height = `${this.scrollHeight}px`;
+}
+
+function handleCommentCancel(e) {
+  e.preventDefault();
+  jsAddCommentText.value = "";
+  jsAddCommentText.style.height = "auto";
+}
+
 function init() {
   commentList = document.getElementById("jsCommentList");
   commentNumber = document.getElementById("jsCommentNumber");
   commentNumberOuterSpan = document.getElementById("jsCommentNumberOuterSpan");
   delComButton = document.getElementsByClassName("delComBtn");
+
+  jsAddCommentText = document.getElementById("jsAddCommentText");
+  jsAddCommentText.setAttribute(
+    "style",
+    `height:${jsAddCommentText.scrollHeight}px;overflow-y:hidden;`
+  );
+  jsAddCommentText.addEventListener("input", OnInput, false);
+
+  jsAddCommentCancel = document.getElementById("add__commentCancel");
+  jsAddCommentCancel.addEventListener("click", handleCommentCancel);
 
   for (let i = 0; i < delComButton.length; i += 1) {
     delComButton[i].addEventListener("click", handleDelete);
