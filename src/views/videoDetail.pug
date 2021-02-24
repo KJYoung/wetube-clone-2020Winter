@@ -37,12 +37,12 @@ block content
                     |  comments
             form.add__comment#jsAddComment
                 if loggedUser 
-                    textarea#jsAddCommentText(rows="1", style="height:1em;", placeholder="Add a comment")
+                    textarea#jsAddCommentText(rows="1", style="height:1em;", placeholder="Add a comment", white-space="pre-wrap")
                     .add__commentBtn
                         button#add__commentCancel 취소
                         input#add__commentSubmit(type="submit", value="댓글")
                 else 
-                    input(type="text", placeholder="Please Login for writing comments.", disabled)
+                    textarea(rows="1", style="height:1em;", placeholder="Please Login for writing comments.", disabled)
             ul.video__comments-list#jsCommentList
                 each comment in video.comments.reverse()
                     +videoComment({

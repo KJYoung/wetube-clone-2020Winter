@@ -156,6 +156,8 @@ function checkKeyInput(e) {
     if (videoPlayer.classList.contains("video__notFullScreen")) {
       handleExpandScreen();
     }
+  } else if (e.keyCode === 9) {
+    e.preventDefault();
   }
 }
 function checkKeysInput(e) {

@@ -1,12 +1,13 @@
 mixin videoComment(comment = {})
     li
         .commentColumn#commentAvatarColumn
-            if comment.isCreator
-                i.fas.fa-volume-up
             img(src=comment.creator.avatarUrl)
         .commentColumn#commentContentColumn
             .commentContentRow
-                span=comment.creator.name
+                if comment.isCreator
+                    span.authorComment=comment.creator.name
+                else 
+                    span=comment.creator.name
             .commentContentRow
                 span=comment.text
             .commentContentRow 

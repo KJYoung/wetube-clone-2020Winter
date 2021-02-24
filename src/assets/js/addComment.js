@@ -7,6 +7,7 @@ let commentNumberOuterSpan;
 let delComButton;
 let jsAddCommentText;
 let jsAddCommentCancel;
+let jsAddCommentSubmit;
 
 function addFakeComment(comment) {
   const li = document.createElement("li");
@@ -43,8 +44,12 @@ function handleSubmit(event) {
   event.preventDefault();
   const commentInput = addCommentForm.querySelector("textarea");
   const comment = commentInput.value;
-  sendComment(comment);
-  commentInput.value = "";
+  if (!comment.replace(/\s/g, "").length) {
+    jsAddCommentSubmit.value = "공백 만으로는 작성할 수 없습니다.";
+  } else {
+    sendComment(comment);
+    commentInput.value = "";
+  }
 }
 
 function deleteFakeComment(commentId) {
@@ -99,15 +104,18 @@ function init() {
   delComButton = document.getElementsByClassName("delComBtn");
 
   jsAddCommentText = document.getElementById("jsAddCommentText");
-  jsAddCommentText.setAttribute(
-    "style",
-    `height:${jsAddCommentText.scrollHeight}px;overflow-y:hidden;`
-  );
-  jsAddCommentText.addEventListener("input", OnInput, false);
+  if (jsAddCommentText) {
+    jsAddCommentText.setAttribute(
+      "style",
+      `height:${jsAddCommentText.scrollHeight}px;overflow-y:hidden;`
+    );
+    jsAddCommentText.addEventListener("input", OnInput, false);
+  }
 
   jsAddCommentCancel = document.getElementById("add__commentCancel");
   jsAddCommentCancel.addEventListener("click", handleCommentCancel);
 
+  jsAddCommentSubmit = document.getElementById("add__commentSubmit");
   for (let i = 0; i < delComButton.length; i += 1) {
     delComButton[i].addEventListener("click", handleDelete);
   }
