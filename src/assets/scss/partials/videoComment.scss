@@ -13,6 +13,11 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    &:hover {
+      .commentColumn:last-child {
+        opacity: 1;
+      }
+    }
     .commentColumn:first-child {
       display: flex;
       align-items: center;
@@ -24,6 +29,7 @@
       }
     }
     .commentColumn:nth-child(2) {
+      width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -69,6 +75,11 @@
       }
     }
     .commentColumn:last-child {
+      align-self: flex-end;
+      margin-right: 15px;
+      opacity: 0;
+      display: flex;
+      align-items: center;
     }
 
     &:not(:last-child) {

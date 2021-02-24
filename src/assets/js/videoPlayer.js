@@ -144,6 +144,10 @@ function volumeRangeListener(e) {
 }
 
 function checkKeyInput(e) {
+  if (e.keyCode === 9) {
+    //Tab
+    e.preventDefault();
+  }
   if (document.activeElement === commentInput) {
     //
   } else if (e.keyCode === 32) {
@@ -156,8 +160,6 @@ function checkKeyInput(e) {
     if (videoPlayer.classList.contains("video__notFullScreen")) {
       handleExpandScreen();
     }
-  } else if (e.keyCode === 9) {
-    e.preventDefault();
   }
 }
 function checkKeysInput(e) {

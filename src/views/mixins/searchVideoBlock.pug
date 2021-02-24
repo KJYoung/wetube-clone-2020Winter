@@ -1,0 +1,21 @@
+mixin searchVideoBlock(video = {})
+    .sVideoBlock
+        a(href=routes.videoDetail(video.id))
+            .sVideoBlock__columns
+                .sVideoBlock__thumbnail-background
+                    video.sVideoBlock__thumbnail(src=video.videoFile)
+            .sVideoBlock__columns
+                .sVideoBlock__rows
+                    h4.sVideoBlock__title=video.title
+                    .sVideoBlock__views-times
+                        if video.views === 1
+                            h6.sVideoBlock__views 1 view
+                        else
+                            h6.sVideoBlock__views #{video.views} views      
+                        h6.sVideoBlock__createdAt #{video.createdAt.getMonth()+1}/#{video.createdAt.getDate()} 에 생성됨.
+                .sVideoBlock__rows
+                    img.user-avatar-small(src=video.avatarUrl)
+                    span.sVideoCreator=video.creatorName
+                .sVideoBlock__rows
+                    span=video.description    
+                        

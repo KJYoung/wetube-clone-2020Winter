@@ -22,7 +22,7 @@ export const searchController = async (req, res) => {
         { title: { $regex: searchingBy, $options: "i" } },
         { description: { $regex: searchingBy, $options: "i" } },
       ],
-    });
+    }).populate("creator");
   } catch (error) {
     console.log(error);
   }
